@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.stage.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import Modle.*?>
+
+<Scene  xmlns:fx="http://javafx.com/fxml/1" fx:id="scene" fill="transparent" width="370" height="410" fx:controller="Controller.Controller">
+
+    <BorderPane styleClass="mainFxmlClass">
+    
+        <fx:define>
+            <Double
+                fx:value = "90"  
+                fx:id="space">
+            </Double>
+        </fx:define>
+
+        <top>
+            <fx:include fx:id="titlePane" source="TitlePane.fxml"/>
+        </top>
+        
+        <center>
+            <StackPane  styleClass="pane"  fx:id="TilePane">
+                <children>
+            <Tile  fx:id="tile0"  translateX="0" translateY="0" onAction="#move" />
+            <Tile  fx:id="tile1" translateX="90" translateY="0" onAction="#move" />
+            <Tile fx:id="tile2" translateX="180" translateY="0" onAction="#move" />
+
+            <Tile  fx:id="tile3" translateX="0" translateY="90" onAction="#move" />
+            <Tile  fx:id="tile4" translateX="90" translateY="90" onAction="#move" />
+            <Tile  fx:id="tile5" translateX="180" translateY="90" onAction="#move" />
+
+            <Tile  fx:id="tile6" translateX="0" translateY="180" onAction="#move" />
+            <Tile fx:id="tile7" isLastTile="true"  translateX="90" translateY="180" onAction="#move" />
+            <Tile fx:id="damy"   number="0"   translateX="180" translateY="180" ></Tile>
+                </children>
+            </StackPane>
+        </center>
+    
+        <bottom>
+            <HBox spacing="7"  style="-fx-background-color:white;"  >
+                <Label fx:id="initiat"  text="initiat" onMouseClicked="#initiate" />
+                <Label fx:id="setState"  text="o" onMouseClicked="#setState" />
+                <Label fx:id="goNext"  text=">" onMouseClicked="#goNext" />
+            </HBox>
+        </bottom>
+
+    
+        <stylesheets>
+            <URL value="@style.css"/>
+        </stylesheets>
+    
+    </BorderPane>
+</Scene>

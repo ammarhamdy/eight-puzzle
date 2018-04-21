@@ -1,0 +1,60 @@
+
+.mainFxmlClass {
+    -fx-background-color:transparent;
+    -fx-border-width:3px;
+    -fx-border-color:#3366ff;
+    -fx-padding:7px;
+}
+
+.button{
+    -fx-pref-width: 75px;
+    -fx-pref-height: 75px;
+    -fx-font: bold 40px Gigi;
+    -fx-background-color: transparent;
+}
+#button{
+    -fx-font: bold 40px Gigi;
+    -fx-background-color: transparent;
+    -fx-border-width: 1.5px;
+    -fx-border-color: #3366ff;
+}
+.pane{
+    -fx-alignment:TOP_LEFT;
+    -fx-padding:30px 50px 0px 50px;
+/*    -fx-background-color:transparent;*/
+    -fx-background-color:white;
+}
+#pane{
+    -fx-alignment:TOP_LEFT;
+    -fx-padding:30px 50px 50px 50px;
+/*    -fx-background-color:transparent;*/
+    -fx-background-color:white;
+}
+
+/*****/
+.titlePane {
+    -fx-background-color:white;
+}
+.titlePane:hover{
+    -fx-background-color: #3366ff;
+}
+#exit{
+    -fx-background-color:transparent;
+    -fx-padding:5.5px;
+    -fx-font-weight:bold;
+}
+#exit:hover{
+    -fx-background-color:crimson;
+}
+#title{
+    -fx-background-color: transparent;
+}
+/****/
+.label{
+    -fx-font: bold 15px Gigi,serif;
+    -fx-background-color: white;
+    -fx-padding: 5px;
+}
+.label:hover{
+    -fx-background-color: #3366ff;
+}

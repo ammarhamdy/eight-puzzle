@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane fx:id="titlePane" xmlns:fx="http://javafx.com/fxml/1"  styleClass="titlePane" fx:controller="Controller.Controller">
+    
+    <left>
+        <Label id="title" fx:id="title" text="8 puzzel" /> 
+    </left>
+    
+    <right>
+        <Label id="exit" text="X" onMouseClicked="#exit" />
+    </right>
+    
+    <stylesheets>
+        <URL value="@style.css"/>
+    </stylesheets>
+    
+</BorderPane>
