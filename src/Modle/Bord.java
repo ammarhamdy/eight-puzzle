@@ -47,6 +47,7 @@ public class Bord {
         //....
         move(damy, target);
     }
+    
     public void applayState(byte[] state) {
         int lastXPos,lastYPos;
         int newXPos,newYPos;
