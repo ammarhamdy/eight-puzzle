@@ -24,6 +24,7 @@ public class TestTile extends Application{
         scene = new Scene(flowPane,500,500);
         primaryStage.setScene(scene);
         primaryStage.show();
+        
     }
     
     public static void main(String[] args) {
