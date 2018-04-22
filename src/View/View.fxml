@@ -53,7 +53,7 @@
 
     
         <stylesheets>
-            <URL value="@style.css"/>
+            <URL value="@Style/style.css"/>
         </stylesheets>
     
     </BorderPane>

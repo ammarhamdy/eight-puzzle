@@ -94,7 +94,7 @@ public class InitiaterStage extends Stage implements EventHandler{
                 getCodeSource().
                 getLocation().
                 getPath()
-                +"View/style.css");
+                +"View/Style/style.css");
     }
     
     

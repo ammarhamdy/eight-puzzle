@@ -14,13 +14,8 @@ import javafx.scene.layout.*;
 public class Controller implements Initializable {
 
 
-    
     @FXML Double space;
     @FXML StackPane TilePane;
-    private ArrayList<Tile> tilesList;
-    private Tile tiles[];
-    private Bord bord;
-    private DepthFirst depthFirst;
     @FXML Tile tile0;
     @FXML Tile tile1;
     @FXML Tile tile2;
@@ -32,7 +27,12 @@ public class Controller implements Initializable {
     @FXML Tile damy;
     @FXML Label setState; 
     @FXML Label goNext; 
+    private ArrayList<Tile> tilesList;
+    private Tile tiles[];
+    private Bord bord;
+    private DepthFirst depthFirst;    
     static byte counter = 0;
+    
     
     @Override
    public void initialize(URL url, ResourceBundle rb) {
@@ -54,6 +54,9 @@ public class Controller implements Initializable {
             bord = new Bord(tilesList);
             TilesTree tree = new TilesTree();
             depthFirst = new DepthFirst(tree.get(), null);
+            for (int i = 0; i < depthFirst.len(); i++) 
+                System.out.println(Arrays.toString((byte[])depthFirst.getState(i).getValue()));
+            System.out.println("\n");
             counter = 0;
         }
     }
@@ -63,8 +66,7 @@ public class Controller implements Initializable {
     final int index = tilesList.indexOf(e.getSource());
     final Tile target = tilesList.get(index);
     //.
-    bord.play(damy, target);
-    TilePane.setDisable(true);
+    TilePane.setDisable(bord.play(damy, target));
     target.setOnFinish(event->{
         TilePane.setDisable(false);
     });
@@ -74,46 +76,31 @@ public class Controller implements Initializable {
         InitiaterStage ini = new InitiaterStage();
         ini.showAndWait();
         String texts[] = ini.getTexts();
-        if (ini.isOk()) {
-            bord.setTiles(
-                    texts, 
-                    tile0,
-                    tile1,
-                    tile2,
-                    tile3,
-                    tile4,
-                    tile5,
-                    tile6,
-                    tile7,
-                    damy);
-        }else
+        if (ini.isOk()) 
+            bord.setTiles(texts, tile0,tile1,tile2,tile3,tile4,tile5,tile6,tile7,damy);
+        else
             System.out.println( "can not initait that" );
     }
 
     public void setState() {
-        byte[] values = (byte[]) depthFirst.getState(counter).getValue();
-        String[] texts = new String[values.length];
-        for (int i = 0; i < values.length; i++) {
-            texts[i] = Byte.toString(values[i]);
-            System.out.println( texts[i] );
-        }
-        bord.setTiles(texts,tile0,tile1,tile2,tile3,tile4,tile5,tile6,tile7,damy);
-        bord.applayState((byte[])depthFirst.getState(counter).getValue());
-        System.out.println(Arrays.toString((byte[])depthFirst.getState(counter).getValue()));
-        setState.setDisable(false);
+        byte[] values = (byte[]) depthFirst.getState(0).getValue();
+        bord.setTiles(values,tile0,tile1,tile2,tile3,tile4,tile5,tile6,tile7,damy);
+        bord.saveState(tilesList);
+        setState.setDisable(true);
+        //System.out.println(Arrays.toString((byte[])depthFirst.getState(0).getValue()));
         counter++;
     }
     
     public void goNext(){
-        if(counter < depthFirst.len()){
-            System.out.println("*");
-            bord.applayState((byte[])depthFirst.getState(counter++).getValue());
-            System.out.println(Arrays.toString((byte[])depthFirst.getState(counter).getValue()));
+        if(counter+1 < depthFirst.len()){
+            bord.applyState((byte[])depthFirst.getState(counter).getValue());
+            bord.saveState(tilesList);
+            //System.out.println("apply "+counter+": "+Arrays.toString((byte[])depthFirst.getState(counter).getValue())+"\n");
         }else
             goNext.setDisable(true);
+        counter++;
     }
         
-    
    public void exit(){
        System.exit(0);
    }
