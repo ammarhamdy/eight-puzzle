@@ -53,8 +53,10 @@ public class Controller implements Initializable {
             tilesList.addAll(Arrays.asList(tiles));
             bord = new Bord(tilesList);
             TilesTree tree = new TilesTree();
-            depthFirst = new DepthFirst(tree.get(), null);
-            for (int i = 0; i < depthFirst.len(); i++) 
+            byte[] F = {1, 4, 2,3, 0, 5,6, 7, 8};
+            Node<byte[]> f = new Node<>(F);
+            depthFirst = new DepthFirst(tree.get(), f);
+            for (int i = 0; i < depthFirst.len(); i++)
                 System.out.println(Arrays.toString((byte[])depthFirst.getState(i).getValue()));
             System.out.println("\n");
             counter = 0;
@@ -92,7 +94,7 @@ public class Controller implements Initializable {
     }
     
     public void goNext(){
-        if(counter+1 < depthFirst.len()){
+        if(counter < depthFirst.len()){
             bord.applyState((byte[])depthFirst.getState(counter).getValue());
             bord.saveState(tilesList);
             //System.out.println("apply "+counter+": "+Arrays.toString((byte[])depthFirst.getState(counter).getValue())+"\n");

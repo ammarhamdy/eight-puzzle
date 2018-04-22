@@ -53,21 +53,32 @@ public class DepthFirst {
         states.add(tree.get());
         addStates(tree);
     }
-    private void addStates(SubTree tree){
+    private boolean addStates(SubTree tree){
         for (int i = 0; i < tree.getChildren().size(); i++) {
             if(tree.getChildren().getChild(i) instanceof SubTree){
                 states.add( tree.getChildren().getChild(i) );
-                addStates( (SubTree)tree.getChildren().getChild(i) );
+                if( addStates( (SubTree)tree.getChildren().getChild(i) ) ){
+                return true;
+                };
+                if (isAGoal(tree.getChildren().getChild(i))) {
+                    System.out.println("found ** ");
+                    return true;
+                }
             }else{
                 states.add(tree.getChildren().getChild(i));
+                if (isAGoal(tree.getChildren().getChild(i))) {
+                    System.out.println("found ** ");
+                    return true;
+                }
                 states.add(tree.get());
                 continue;
             }
             states.add(tree.get());
         }
+        return false;
     }
     private boolean isAGoal( Node node ){
-        return goal.getValue() == node.getValue();
+        return Arrays.equals( (byte[])goal.getValue() , (byte[])node.getValue() );
     }
 
 
