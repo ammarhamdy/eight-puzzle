@@ -36,9 +36,8 @@ public class Tile extends Button{
     
     public Tile(){
         this.number = new SimpleIntegerProperty();
-        if(!isLastTile.get()){
+        if(!isLastTile.get())
             this.number.set(getAnyNumber());
-        }
         setText(Byte.toString((byte)number.get()));
         translateDuration = new Duration(500); 
         translateTransition = new TranslateTransition(translateDuration, this);
@@ -46,6 +45,7 @@ public class Tile extends Button{
         rotateTransition = new RotateTransition(RotateDuration, this);
         setRotateTransition();
     }
+    
     
     public void setNumber(byte number){
         this.number.set(number);
@@ -106,9 +106,8 @@ public class Tile extends Button{
     
     ///...private...\\\
     private static void setNumbers(){ 
-        for (byte i = 1; i < NUMBER_OF_TILES+1; i++) {
+        for (byte i = 1; i < NUMBER_OF_TILES+1; i++)
             NUMBERS.append(i);
-        }
     }
     
     private byte getAnyNumber(){

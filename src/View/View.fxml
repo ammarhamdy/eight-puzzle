@@ -8,6 +8,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.shape.*?>
+<?import javafx.collections.*?>
 <?import Modle.*?>
 
 <Scene  xmlns:fx="http://javafx.com/fxml/1" fx:id="scene" fill="transparent" width="370" height="410" fx:controller="Controller.Controller">
@@ -17,40 +18,60 @@
         <fx:define>
             <Double
                 fx:value = "90"  
-                fx:id="space">
+                fx:id="gap">
             </Double>
         </fx:define>
 
         <top>
-            <fx:include fx:id="titlePane" source="TitlePane.fxml"/>
+            <fx:include fx:id="titlePane"  source="TitlePane.fxml"/>
         </top>
         
         <center>
-            <StackPane  styleClass="pane"  fx:id="TilePane">
+            <StackPane  styleClass="pane"  fx:id="tilePane">
                 <children>
-            <Tile  fx:id="tile0"  translateX="0" translateY="0" onAction="#move" />
-            <Tile  fx:id="tile1" translateX="90" translateY="0" onAction="#move" />
-            <Tile fx:id="tile2" translateX="180" translateY="0" onAction="#move" />
+            <Tile  fx:id="tile0"  translateX="0" translateY="0" onAction="#play" />
+            <Tile  fx:id="tile1" translateX="90" translateY="0" onAction="#play" />
+            <Tile fx:id="tile2" translateX="180" translateY="0" onAction="#play" />
 
-            <Tile  fx:id="tile3" translateX="0" translateY="90" onAction="#move" />
-            <Tile  fx:id="tile4" translateX="90" translateY="90" onAction="#move" />
-            <Tile  fx:id="tile5" translateX="180" translateY="90" onAction="#move" />
+            <Tile  fx:id="tile3" translateX="0" translateY="90" onAction="#play" />
+            <Tile  fx:id="tile4" translateX="90" translateY="90" onAction="#play" />
+            <Tile  fx:id="tile5" translateX="180" translateY="90" onAction="#play" />
 
-            <Tile  fx:id="tile6" translateX="0" translateY="180" onAction="#move" />
-            <Tile fx:id="tile7" isLastTile="true"  translateX="90" translateY="180" onAction="#move" />
-            <Tile fx:id="damy"   number="0"   translateX="180" translateY="180" ></Tile>
+            <Tile  fx:id="tile6" translateX="0" translateY="180" onAction="#play" />
+            <Tile fx:id="tile7" isLastTile="true"  translateX="90" translateY="180" onAction="#play" />
+            <Tile fx:id="damy"   number="0"  visible="false"  translateX="180" translateY="180" ></Tile>
                 </children>
             </StackPane>
         </center>
     
         <bottom>
-            <HBox spacing="7"  style="-fx-background-color:white;"  >
-                <Label fx:id="initiat"  text="initiat" onMouseClicked="#initiate" />
-                <Label fx:id="setState"  text="o" onMouseClicked="#setState" />
-                <Label fx:id="goNext"  text=">" onMouseClicked="#goNext" />
-            </HBox>
+            <BorderPane fx:id="controlBar" style="-fx-background-color: white">
+                <left>
+                    <Label fx:id="initiat"  text="Enter" onMouseClicked="#enter" />
+                </left>
+                <center>
+                    <HBox alignment="CENTER" >
+                        <Label fx:id="goBack"  text="&lt;" disable="true"  onMouseClicked="#goBack" />
+                        <Label fx:id="start"  text="o" onMouseClicked="#start" />
+                        <Label fx:id="goNext"  text="&gt;" disable="true"  onMouseClicked="#goNext" />
+                    </HBox>
+                </center>
+                <right>
+                    <ComboBox id="options" visibleRowCount="2"  onAction="#useSearch">
+                        <value>
+                            <String fx:value="depth first" />
+                        </value>
+                        <items>
+                            <FXCollections fx:factory="observableArrayList" fx:id="itmes">
+                                <String fx:value="depth first"  />
+                                <String fx:value="breadth first" />
+                            </FXCollections>
+                        </items>
+                    </ComboBox>
+                </right>
+            </BorderPane>
         </bottom>
-
+        
     
         <stylesheets>
             <URL value="@Style/style.css"/>

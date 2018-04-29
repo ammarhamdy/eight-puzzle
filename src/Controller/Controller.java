@@ -3,6 +3,7 @@ package Controller;
 
 import Modle.*;
 import Modle.Search.*;
+import Modle.Tree.Samples;
 import java.net.*;
 import java.util.*;
 import javafx.event.*;
@@ -14,8 +15,8 @@ import javafx.scene.layout.*;
 public class Controller implements Initializable {
 
 
-    @FXML Double space;
-    @FXML StackPane TilePane;
+    @FXML Double gap;
+    @FXML StackPane tilePane;
     @FXML Tile tile0;
     @FXML Tile tile1;
     @FXML Tile tile2;
@@ -25,12 +26,17 @@ public class Controller implements Initializable {
     @FXML Tile tile6;
     @FXML Tile tile7;
     @FXML Tile damy;
-    @FXML Label setState; 
-    @FXML Label goNext; 
-    private ArrayList<Tile> tilesList;
+    @FXML Label start; 
+    @FXML Label goNext;
+    @FXML Label goBack;
+    @FXML BorderPane controlBar;
     private Tile tiles[];
-    private Bord bord;
-    private DepthFirst depthFirst;    
+    private Board board;
+    private DepthFirst<byte[]> depthFirst;
+    private BreadthFirst<byte[]> breadthFirst;
+    private List<byte[]> states;
+    private byte length;
+    private boolean turn;
     static byte counter = 0;
     
     
@@ -38,74 +44,102 @@ public class Controller implements Initializable {
    public void initialize(URL url, ResourceBundle rb) {
         counter++;
         if (counter == 2) {
-            tilesList = new ArrayList(9);
             tiles = new Tile[9];
-            tiles[Byte.parseByte(tile0.getText())-1] = tile0;
-            tiles[Byte.parseByte(tile1.getText())-1] = tile1;
-            tiles[Byte.parseByte(tile2.getText())-1] = tile2;
-            tiles[Byte.parseByte(tile3.getText())-1] = tile3;
-            tiles[Byte.parseByte(tile4.getText())-1] = tile4;
-            tiles[Byte.parseByte(tile5.getText())-1] = tile5;
-            tiles[Byte.parseByte(tile6.getText())-1] = tile6;
-            tiles[Byte.parseByte(tile7.getText())-1] = tile7;
-            tiles[8] = damy;
+            tiles[0] = damy;
+            tiles[tile0.getNumber()] = tile0;
+            tiles[tile1.getNumber()] = tile1;
+            tiles[tile2.getNumber()] = tile2;
+            tiles[tile3.getNumber()] = tile3;
+            tiles[tile4.getNumber()] = tile4;
+            tiles[tile5.getNumber()] = tile5;
+            tiles[tile6.getNumber()] = tile6;
+            tiles[tile7.getNumber()] = tile7;
             //.
-            tilesList.addAll(Arrays.asList(tiles));
-            bord = new Bord(tilesList);
-            TilesTree tree = new TilesTree();
-            byte[] F = {1, 4, 2,3, 0, 5,6, 7, 8};
-            Node<byte[]> f = new Node<>(F);
-            depthFirst = new DepthFirst(tree.get(), f);
-            for (int i = 0; i < depthFirst.len(); i++)
-                System.out.println(Arrays.toString((byte[])depthFirst.getState(i).getValue()));
-            System.out.println("\n");
+            board = new Board(gap, (byte)3);
+            Samples sample = new Samples();
+            byte[] goal = {1, 4, 2,3, 0, 5,6, 7, 8};
+            depthFirst = new DepthFirst(sample.getBytesTree(), goal);
+            depthFirst.search();
+            breadthFirst = new BreadthFirst(sample.getBytesTree(), goal);
+            breadthFirst.search();
+            states = (List<byte[]>) depthFirst.getStateList();
+            length = (byte) depthFirst.len();
             counter = 0;
         }
     }
     
     
-   public void move(Event e) {
-    final int index = tilesList.indexOf(e.getSource());
-    final Tile target = tilesList.get(index);
+   public void play(Event e) {
+    final int index = ((Tile)(e.getSource())).getNumber() ;
+    final Tile target = tiles[index];
     //.
-    TilePane.setDisable(bord.play(damy, target));
+    tilePane.setDisable(board.play(damy, target));
     target.setOnFinish(event->{
-        TilePane.setDisable(false);
+        tilePane.setDisable(false);
     });
 }
    
-    public void initiate() throws URISyntaxException {
+    public void enter() throws URISyntaxException {
         InitiaterStage ini = new InitiaterStage();
         ini.showAndWait();
         String texts[] = ini.getTexts();
-        if (ini.isOk()) 
-            bord.setTiles(texts, tile0,tile1,tile2,tile3,tile4,tile5,tile6,tile7,damy);
+        if (ini.isOk())
+            board.reOrder(texts, tiles);
         else
             System.out.println( "can not initait that" );
     }
 
-    public void setState() {
-        byte[] values = (byte[]) depthFirst.getState(0).getValue();
-        bord.setTiles(values,tile0,tile1,tile2,tile3,tile4,tile5,tile6,tile7,damy);
-        bord.saveState(tilesList);
-        setState.setDisable(true);
-        //System.out.println(Arrays.toString((byte[])depthFirst.getState(0).getValue()));
-        counter++;
+    public void start() {
+        board.reOrder((byte[]) depthFirst.getState(counter++), tiles);
+        start.setDisable(true);
+        goNext.setDisable(false);
+        turn = true;
     }
     
     public void goNext(){
-        if(counter < depthFirst.len()){
-            bord.applyState((byte[])depthFirst.getState(counter).getValue());
-            bord.saveState(tilesList);
-            //System.out.println("apply "+counter+": "+Arrays.toString((byte[])depthFirst.getState(counter).getValue())+"\n");
-        }else
-            goNext.setDisable(true);
-        counter++;
+        if( !turn ){
+            counter+=2;
+            turn = true;
+        }
+        Tile target =board.getTargeted(states.get(counter++), tiles);
+        controlBar.setDisable(board.play(tiles[0], target));
+        target.setOnFinish(e->controlBar.setDisable(false));
+        goNext.setDisable(counter == length);
+        goBack.setDisable(false);
     }
-        
-   public void exit(){
+    
+    public void goBack(){
+        if(turn ){
+            counter-=2;
+            turn = false;
+        }
+        Tile target = board.getTargeted(states.get(counter--), tiles);
+        controlBar.setDisable(board.play(tiles[0], target));
+        target.setOnFinish(e->controlBar.setDisable(false));
+        goBack.setDisable(counter == -1);  
+        goNext.setDisable(false);
+    }
+    
+    public void useSearch(Event e){
+        ComboBox select = (ComboBox)e.getSource();
+        if( "depth first".equals((String)select.getValue())){
+            states = depthFirst.getStateList();
+            length = (byte)depthFirst.len();
+        }else{
+            states = breadthFirst.getStateList();
+            length = (byte)breadthFirst.len();
+        }
+        start.setDisable(false);
+        goNext.setDisable(true);
+        goBack.setDisable(true);
+        counter = 0;
+    }
+    
+    
+    public void exit(){
        System.exit(0);
    }
+   
    
    
     

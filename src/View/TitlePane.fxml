@@ -10,7 +10,7 @@
 <BorderPane fx:id="titlePane" xmlns:fx="http://javafx.com/fxml/1"  styleClass="titlePane" fx:controller="Controller.Controller">
     
     <left>
-        <Label id="title" fx:id="title" text="8 puzzel" /> 
+            <Label id="title" fx:id="title" text="8 puzzel" /> 
     </left>
     
     <right>

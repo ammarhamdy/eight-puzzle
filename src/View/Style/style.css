@@ -58,3 +58,7 @@
 .label:hover{
     -fx-background-color: #3366ff;
 }
+/***/
+#options{
+    -fx-background-color: white;
+}
