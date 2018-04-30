@@ -1,5 +1,5 @@
 
-package Modle;
+package Model;
 
 import javafx.animation.*;
 import javafx.beans.property.*;
@@ -76,14 +76,14 @@ public class Tile extends Button{
         this.RotateDuration = duration;
     }
     
-    public void moveHorizentallyTo(double value){
-        translateTransition.setToX(value);
-        translateTransition.play();
-    }
-    public void moveVerticallyTo(double value){
-        translateTransition.setToY(value);
-        translateTransition.play();
-    }
+//    public void moveHorizentallyTo(double value){
+//        translateTransition.setToX(value);
+//        translateTransition.play();
+//    }
+//    public void moveVerticallyTo(double value){
+//        translateTransition.setToY(value);
+//        translateTransition.play();
+//    }
     
     public void play(double tx , double ty){
         translateTransition.setToX(tx);

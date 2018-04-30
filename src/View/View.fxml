@@ -54,6 +54,7 @@
                         <Label fx:id="goBack"  text="&lt;" disable="true"  onMouseClicked="#goBack" />
                         <Label fx:id="start"  text="o" onMouseClicked="#start" />
                         <Label fx:id="goNext"  text="&gt;" disable="true"  onMouseClicked="#goNext" />
+<!--                        <Label fx:id="autoPlay"  text="o"   onMouseClicked="#autoPlay" />-->
                     </HBox>
                 </center>
                 <right>

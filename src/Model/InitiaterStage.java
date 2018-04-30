@@ -1,5 +1,5 @@
 
-package Modle;
+package Model;
 
 import java.net.URISyntaxException;
 import javafx.event.*;

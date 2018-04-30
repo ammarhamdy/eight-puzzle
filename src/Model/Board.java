@@ -1,5 +1,5 @@
 
-package Modle;
+package Model;
 
 public class Board {
     

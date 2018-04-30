@@ -1,9 +1,12 @@
 
 package Controller;
 
-import Modle.*;
-import Modle.Search.*;
-import Modle.Tree.Samples;
+import Model.Search.BreadthFirst;
+import Model.Search.DepthFirst;
+import Model.InitiaterStage;
+import Model.Board;
+import Model.Tile;
+import Model.Tree.Samples;
 import java.net.*;
 import java.util.*;
 import javafx.event.*;
@@ -69,14 +72,12 @@ public class Controller implements Initializable {
     }
     
     
-   public void play(Event e) {
-    final int index = ((Tile)(e.getSource())).getNumber() ;
+   public void play(Event event) {
+    final int index = ((Tile)(event.getSource())).getNumber() ;
     final Tile target = tiles[index];
     //.
     tilePane.setDisable(board.play(damy, target));
-    target.setOnFinish(event->{
-        tilePane.setDisable(false);
-    });
+    target.setOnFinish(e->tilePane.setDisable(false));
 }
    
     public void enter() throws URISyntaxException {
@@ -101,7 +102,7 @@ public class Controller implements Initializable {
             counter+=2;
             turn = true;
         }
-        Tile target =board.getTargeted(states.get(counter++), tiles);
+        Tile target = board.getTargeted(states.get(counter++), tiles);
         controlBar.setDisable(board.play(tiles[0], target));
         target.setOnFinish(e->controlBar.setDisable(false));
         goNext.setDisable(counter == length);
@@ -116,7 +117,7 @@ public class Controller implements Initializable {
         Tile target = board.getTargeted(states.get(counter--), tiles);
         controlBar.setDisable(board.play(tiles[0], target));
         target.setOnFinish(e->controlBar.setDisable(false));
-        goBack.setDisable(counter == -1);  
+        goBack.setDisable(counter == -1);
         goNext.setDisable(false);
     }
     
@@ -135,6 +136,15 @@ public class Controller implements Initializable {
         counter = 0;
     }
     
+    public void autoPlay(Event event){
+        board.reOrder(states.get(0), tiles);
+//        for (int i = 0; i < states.size()-1; i++) {
+//            tiles[i].setOnFinish(e->controlBar.setDisable(board.play(tiles[0], board.getTargeted(states.get(++counter), tiles))));
+//        }
+ Tile target =  board.getTargeted(states.get(++counter), tiles);
+target.setOnFinish(e->board.play(tiles[0], board.getTargeted(states.get(++counter), tiles)));
+        //board.play(tiles[0], board.getTargeted(states.get(1), tiles) );
+    }
     
     public void exit(){
        System.exit(0);

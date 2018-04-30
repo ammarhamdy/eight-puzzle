@@ -1,5 +1,5 @@
 
-package Modle.Tree;
+package Model.Tree;
 
 import java.util.ArrayList;
 import java.util.Arrays;
